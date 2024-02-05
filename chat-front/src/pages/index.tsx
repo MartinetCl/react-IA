@@ -1,6 +1,6 @@
 import Image from 'next/image';
 
-import { Sponsors } from '@/components/Sponsors';
+
 import { Meta } from '@/layouts/Meta';
 import { Main } from '@/templates/Main';
 
@@ -22,7 +22,7 @@ const Index = () => (
       />
     </a>
     <h2 className="mt-5 text-2xl font-bold">Sponsors</h2>
-    <Sponsors />
+
     <h2 className="mt-5 text-2xl font-bold">
       Boilerplate code for your Nextjs project with Tailwind CSS
     </h2>
