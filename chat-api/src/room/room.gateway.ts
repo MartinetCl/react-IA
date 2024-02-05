@@ -1,8 +1,21 @@
 import { SubscribeMessage, WebSocketGateway, WebSocketServer } from "@nestjs/websockets";
 import { Socket } from "socket.io";
+import { v4 as uuidv4 } from 'uuid';    
 
-interface IQuestion {
-    question: string;
+interface IResponse {
+    username: string;
+    response: string;
+}
+
+interface ITopic {
+    topic: string;
+}
+
+interface IPlayer {
+    client: Socket, 
+    username?: string, 
+    score: number,
+    id: number 
 }
 
 @WebSocketGateway({cors: true})
@@ -10,13 +23,27 @@ export class RoomGateway {
   @WebSocketServer()
   server: Socket;
 
-  players: { client: Socket; username: string }[] = [];
-  questions: IQuestion[] = [];
+  players:IPlayer[] = [];
+  responses: IResponse[] = [];
 
   @SubscribeMessage('message')
   handleMessage(client: any, payload: any): string {
     return 'Hello world!';
   }
 
+  handleConnection(client: Socket) {
+    const id = uuidv4();
+    console.log('client connected ', id);
+    this.players.push({
+        client: client,
+        id: id,
+        score: 0
+    });
+  }
+
+  handleDisconnect(client: any) {
+    console.log('client disconnected ', client.id);
+    this.players = this.players.filter((p) => p.id !== client.id);
+  }
 
 }
