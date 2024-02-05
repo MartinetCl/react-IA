@@ -34,11 +34,13 @@ export class RoomGateway {
   handleConnection(client: Socket) {
     const id = uuidv4();
     console.log('client connected ', id);
-    this.players.push({
+    const player = {
         client: client,
         id: id,
         score: 0
-    });
+    }
+    this.players.push(player);
+    this.server.emit('player-info', player)
   }
 
   handleDisconnect(client: any) {
