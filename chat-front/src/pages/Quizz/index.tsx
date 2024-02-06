@@ -1,8 +1,4 @@
-/**
- * v0 by Vercel.
- * @see https://v0.dev/t/6Y1PyKAWTwl
- * Documentation: https://v0.dev/docs#integrating-generated-code-into-your-nextjs-app
- */
+
 export default function Component() {
     return (
         <div className="flex h-screen bg-gray-100 dark:bg-gray-900">
