@@ -2,9 +2,9 @@ import { ChatGPTAPI } from 'chatgpt';
 
 class ChatGptService {
   private api: ChatGPTAPI;
-  constructor(apiKey) {
+  constructor() {
     this.api = new ChatGPTAPI({
-      apiKey: apiKey,
+      apiKey: process.env.API_KEY,
     });
   }
 
