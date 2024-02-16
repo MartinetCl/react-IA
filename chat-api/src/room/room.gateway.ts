@@ -67,7 +67,8 @@ export class RoomGateway {
         players: [player],
         responses: [],
         topics: [],
-        id: roomId
+        id: roomId,
+        password: payload.password
     }
     //emit ? 
   }
