@@ -1,20 +1,24 @@
-import { ChatGPTAPI } from 'chatgpt';
+import { OpenAI } from 'openai';
 
 class ChatGptService {
-  private api: ChatGPTAPI;
+  private api: OpenAI;
   constructor() {
-    this.api = new ChatGPTAPI({
+    this.api = new OpenAI({
       apiKey: process.env.API_KEY,
     });
   }
 
   async sendMessage(text: string, context: string): Promise<string> {
     try {
-      const result = await this.api.sendMessage(text, {
-        systemMessage: context,
+      const result = await this.api.chat.completions.create({
+        messages: [
+          { role: 'system', content: context },
+          { role: 'user', content: text }
+        ],
+        model: 'gpt-3.5-turbo',
       });
 
-      return result.text;
+      return result.choices[0].message.content;
     } catch (error) {
       console.error('Erreur lors de l\'appel à l\'API ChatGPT:', error);
       throw error;
