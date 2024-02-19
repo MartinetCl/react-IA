@@ -1,5 +1,6 @@
 import { OnGatewayConnection, OnGatewayDisconnect, SubscribeMessage, WebSocketGateway, WebSocketServer } from "@nestjs/websockets";
 import { Socket } from "socket.io";
+import ChatGptService from "src/services/chatGptService";
 import { v4 as uuidv4 } from 'uuid';    
 
 export interface IResponse {
@@ -20,7 +21,9 @@ export interface IPlayer {
 export interface IRoom {
     players: IPlayer[],
     responses: IResponse[],
+    difficulty: number,
     topics: ITopic[],
+    gameIsStarted:boolean,
     id: string,
     password?: string
 }
@@ -29,6 +32,7 @@ export interface IRoom {
 export class RoomGateway implements OnGatewayConnection, OnGatewayDisconnect {
   @WebSocketServer()
   server: Socket;
+  chatGptService: ChatGptService;
 
   players:IPlayer[] = [];
   responses: IResponse[] = [];
@@ -60,27 +64,40 @@ export class RoomGateway implements OnGatewayConnection, OnGatewayDisconnect {
   }
 
   @SubscribeMessage('create-room')
-  handleCreateRoom(client: Socket, payload: any) {
-    let player = this.findPlayerById(client.id);
+  handleCreateRoom(client: Socket, payload: {topics: ITopic[], difficulty: number, password?: string}) {
     let roomId = uuidv4();
     let room: IRoom = { 
-        players: [player],
+        players: [],
         responses: [],
-        topics: [],
+        topics: payload.topics,
+        difficulty: payload.difficulty,
+        gameIsStarted: false,
         id: roomId,
-        password: payload.password
     }
-    //emit ? 
+    if (payload.password) {
+        room.password = payload.password;
+    }
+    this.rooms.push(room);
+    this.server.emit('room-info', room); 
   }
 
   @SubscribeMessage('make-question')
-  handleMakeQuestion(client: Socket, payload: any) {
-    
+  async handleMakeQuestion(client: Socket, payload: any) {
+    try {
+      // let question = await this.chatGptService.askQuestion(payload.question, payload.topic, payload.difficulty);
+      // this.server.emit('question', question);
+    } catch (error) {
+        console.error('Erreur lors de l\'appel à l\'API ChatGPT:', error);
+    }
   }
 
   @SubscribeMessage('get-response')
   handleGetResponse(client: Socket, payload: any) {
-    
+    try {
+      // response ........ 
+    } catch (error) {
+        console.error('Erreur lors de l\'appel à l\'API ChatGPT:', error);
+    }
   }
 
   @SubscribeMessage('join-room')
