@@ -1,35 +1,38 @@
-import { SubscribeMessage, WebSocketGateway, WebSocketServer } from "@nestjs/websockets";
+import { OnGatewayConnection, OnGatewayDisconnect, SubscribeMessage, WebSocketGateway, WebSocketServer } from "@nestjs/websockets";
 import { Socket } from "socket.io";
+import ChatGptService from "src/services/chatGptService";
 import { v4 as uuidv4 } from 'uuid';    
 
-interface IResponse {
+export interface IResponse {
     username: string;
     response: string;
 }
 
-interface ITopic {
+export interface ITopic {
     topic: string;
 }
 
-interface IPlayer {
-    client: Socket, 
+export interface IPlayer {
     username?: string, 
     score: number,
     id: string 
 }
 
-interface IRoom {
+export interface IRoom {
     players: IPlayer[],
     responses: IResponse[],
+    difficulty: number,
     topics: ITopic[],
+    gameIsStarted:boolean,
     id: string,
     password?: string
 }
 
 @WebSocketGateway({cors: true})
-export class RoomGateway {
+export class RoomGateway implements OnGatewayConnection, OnGatewayDisconnect {
   @WebSocketServer()
   server: Socket;
+  chatGptService: ChatGptService;
 
   players:IPlayer[] = [];
   responses: IResponse[] = [];
@@ -41,42 +44,66 @@ export class RoomGateway {
   }
 
   handleConnection(client: Socket) {
-    const id = uuidv4();
+    let id = uuidv4();
     console.log('client connected ', id);
-    const player = {
-        client: client,
+    let player: IPlayer = {
         id: id,
         score: 0
     }
     this.players.push(player);
-    this.server.emit('player-info', player)
-  }
-
-  @SubscribeMessage('set-username')
-  handleSetUsername(client: Socket, payload: any) {
-    const player = this.findPlayerById(client.id);
-    player.username = payload.username;
     this.server.emit('player-info', player);
   }
 
-  @SubscribeMessage('create-room')
-  handleCreateRoom(client: Socket, payload: any) {
-    const player = this.findPlayerById(client.id);
-    const roomId = uuidv4();
-    const room: IRoom = { 
-        players: [player],
-        responses: [],
-        topics: [],
-        id: roomId,
-        password: payload.password
+  @SubscribeMessage('set-username')
+  handleSetUsername(client: Socket, payload: {id: string, username: string}) {
+    let player = this.findPlayerById(payload.id);
+    if (payload.username && player) {
+      player.username = payload.username;
+      this.server.emit('player-info', player);
     }
-    //emit ? 
+  }
+
+  @SubscribeMessage('create-room')
+  handleCreateRoom(client: Socket, payload: {topics: ITopic[], difficulty: number, password?: string}) {
+    let roomId = uuidv4();
+    let room: IRoom = { 
+        players: [],
+        responses: [],
+        topics: payload.topics,
+        difficulty: payload.difficulty,
+        gameIsStarted: false,
+        id: roomId,
+    }
+    if (payload.password) {
+        room.password = payload.password;
+    }
+    this.rooms.push(room);
+    this.server.emit('room-info', room); 
+  }
+
+  @SubscribeMessage('make-question')
+  async handleMakeQuestion(client: Socket, payload: any) {
+    try {
+      // let question = await this.chatGptService.askQuestion(payload.question, payload.topic, payload.difficulty);
+      // this.server.emit('question', question);
+    } catch (error) {
+        console.error('Erreur lors de l\'appel à l\'API ChatGPT:', error);
+    }
+  }
+
+  @SubscribeMessage('get-response')
+  handleGetResponse(client: Socket, payload: any) {
+    try {
+      // response ........ 
+    } catch (error) {
+        console.error('Erreur lors de l\'appel à l\'API ChatGPT:', error);
+    }
   }
 
   @SubscribeMessage('join-room')
   handleJoinRoom(client: Socket, payload: any) {
-    const player = this.findPlayerById(client.id);
-    const room = this.findRoomById(payload.roomId);
+    let player = this.findPlayerById(client.id);
+    let room = this.findRoomById(payload.roomId);
     if(room) {
         if (room.password && room.password !== payload.password) {
             return;
@@ -94,7 +121,7 @@ export class RoomGateway {
 
 
   private findPlayerById(id: string): IPlayer {
-    return this.players.find((p) => p.id === id);
+    return this.players.find((p) => p.id == id);
   }
 
   private findRoomById(id: string): IRoom {
