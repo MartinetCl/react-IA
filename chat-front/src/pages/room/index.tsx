@@ -13,7 +13,7 @@ export default function Component() {
             <header className="flex h-[60px] items-center gap-4 border-b bg-gray-100/40 px-6 dark:bg-gray-800/40">
                 <Link className="flex items-center gap-2 font-semibold" href="#">
                     <Package2Icon className="h-6 w-6" />
-                    <span className="">Acme Inc</span>
+                    <span className="">Quizz</span>
                 </Link>
                 <Button className="ml-auto h-8 w-8" size="icon" variant="outline">
                     <BellIcon className="h-4 w-4" />
@@ -22,53 +22,37 @@ export default function Component() {
             </header>
             <main className="flex flex-1 flex-col gap-4 p-4 md:gap-8 md:p-6">
                 <div className="flex items-center">
-                    <h1 className="font-semibold text-lg md:text-2xl">Choose a Quiz Topic</h1>
+                    <h1 className="font-semibold text-lg md:text-2xl">Choissisez votre Room</h1>
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                     <div className="border shadow-sm rounded-lg">
                         <div className="p-4">
-                            <h2 className="text-xl font-semibold">Geography Quiz</h2>
-                            <p className="mt-2 text-gray-500 dark:text-gray-400">This quiz will test your knowledge of geography.</p>
-                            <Button className="mt-4">Start Quiz</Button>
+                            <h2 className="text-xl font-semibold">Room privé</h2>
+                            <p className="mt-2 text-gray-500 dark:text-gray-400">Cette room est déstinez à des parties privées.</p>
+                            <br />
+                            <div>
+                                <label htmlFor="username" className="sr-only">Code </label>
+                                <input
+                                    id="username"
+                                    name="username"
+                                    type="text"
+                                    autoComplete="username"
+                                    required
+                                    className="appearance-none rounded-none relative block px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                                    placeholder="Entrez votre code d'accés"
+                                />
+                                <Button className="mt-4">Accedez</Button>
+                            </div>
                         </div>
                     </div>
                     <div className="border shadow-sm rounded-lg">
                         <div className="p-4">
-                            <h2 className="text-xl font-semibold">History Quiz</h2>
-                            <p className="mt-2 text-gray-500 dark:text-gray-400">This quiz will test your knowledge of history.</p>
-                            <Button className="mt-4">Start Quiz</Button>
+                            <h2 className="text-xl font-semibold">Room publique (Aléatoire)</h2>
+                            <p className="mt-2 text-gray-500 dark:text-gray-400"> Cette room est déstinez à des parties publique et aléatoire.</p>
+                            <Button className="mt-4">Accedez</Button>
                         </div>
                     </div>
-                    <div className="border shadow-sm rounded-lg">
-                        <div className="p-4">
-                            <h2 className="text-xl font-semibold">Science Quiz</h2>
-                            <p className="mt-2 text-gray-500 dark:text-gray-400">This quiz will test your knowledge of science.</p>
-                            <Button className="mt-4">Start Quiz</Button>
-                        </div>
-                    </div>
-                    <div className="border shadow-sm rounded-lg">
-                        <div className="p-4">
-                            <h2 className="text-xl font-semibold">Mathematics Quiz</h2>
-                            <p className="mt-2 text-gray-500 dark:text-gray-400">
-                                This quiz will test your knowledge of mathematics.
-                            </p>
-                            <Button className="mt-4">Start Quiz</Button>
-                        </div>
-                    </div>
-                    <div className="border shadow-sm rounded-lg">
-                        <div className="p-4">
-                            <h2 className="text-xl font-semibold">Literature Quiz</h2>
-                            <p className="mt-2 text-gray-500 dark:text-gray-400">This quiz will test your knowledge of literature.</p>
-                            <Button className="mt-4">Start Quiz</Button>
-                        </div>
-                    </div>
-                    <div className="border shadow-sm rounded-lg">
-                        <div className="p-4">
-                            <h2 className="text-xl font-semibold">Art Quiz</h2>
-                            <p className="mt-2 text-gray-500 dark:text-gray-400">This quiz will test your knowledge of art.</p>
-                            <Button className="mt-4">Start Quiz</Button>
-                        </div>
-                    </div>
+
                 </div>
             </main>
         </div>
