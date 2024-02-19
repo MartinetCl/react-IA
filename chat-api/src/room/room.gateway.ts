@@ -1,24 +1,23 @@
-import { SubscribeMessage, WebSocketGateway, WebSocketServer } from "@nestjs/websockets";
+import { OnGatewayConnection, OnGatewayDisconnect, SubscribeMessage, WebSocketGateway, WebSocketServer } from "@nestjs/websockets";
 import { Socket } from "socket.io";
 import { v4 as uuidv4 } from 'uuid';    
 
-interface IResponse {
+export interface IResponse {
     username: string;
     response: string;
 }
 
-interface ITopic {
+export interface ITopic {
     topic: string;
 }
 
-interface IPlayer {
-    client: Socket, 
+export interface IPlayer {
     username?: string, 
     score: number,
     id: string 
 }
 
-interface IRoom {
+export interface IRoom {
     players: IPlayer[],
     responses: IResponse[],
     topics: ITopic[],
@@ -27,7 +26,7 @@ interface IRoom {
 }
 
 @WebSocketGateway({cors: true})
-export class RoomGateway {
+export class RoomGateway implements OnGatewayConnection, OnGatewayDisconnect {
   @WebSocketServer()
   server: Socket;
 
@@ -41,29 +40,30 @@ export class RoomGateway {
   }
 
   handleConnection(client: Socket) {
-    const id = uuidv4();
+    let id = uuidv4();
     console.log('client connected ', id);
-    const player = {
-        client: client,
+    let player: IPlayer = {
         id: id,
         score: 0
     }
     this.players.push(player);
-    this.server.emit('player-info', player)
+    this.server.emit('player-info', player);
   }
 
   @SubscribeMessage('set-username')
-  handleSetUsername(client: Socket, payload: any) {
-    const player = this.findPlayerById(client.id);
-    player.username = payload.username;
-    this.server.emit('player-info', player);
+  handleSetUsername(client: Socket, payload: {id: string, username: string}) {
+    let player = this.findPlayerById(payload.id);
+    if (payload.username && player) {
+      player.username = payload.username;
+      this.server.emit('player-info', player);
+    }
   }
 
   @SubscribeMessage('create-room')
   handleCreateRoom(client: Socket, payload: any) {
-    const player = this.findPlayerById(client.id);
-    const roomId = uuidv4();
-    const room: IRoom = { 
+    let player = this.findPlayerById(client.id);
+    let roomId = uuidv4();
+    let room: IRoom = { 
         players: [player],
         responses: [],
         topics: [],
@@ -73,10 +73,20 @@ export class RoomGateway {
     //emit ? 
   }
 
+  @SubscribeMessage('make-question')
+  handleMakeQuestion(client: Socket, payload: any) {
+    
+  }
+
+  @SubscribeMessage('get-response')
+  handleGetResponse(client: Socket, payload: any) {
+    
+  }
+
   @SubscribeMessage('join-room')
   handleJoinRoom(client: Socket, payload: any) {
-    const player = this.findPlayerById(client.id);
-    const room = this.findRoomById(payload.roomId);
+    let player = this.findPlayerById(client.id);
+    let room = this.findRoomById(payload.roomId);
     if(room) {
         if (room.password && room.password !== payload.password) {
             return;
@@ -94,7 +104,7 @@ export class RoomGateway {
 
 
   private findPlayerById(id: string): IPlayer {
-    return this.players.find((p) => p.id === id);
+    return this.players.find((p) => p.id == id);
   }
 
   private findRoomById(id: string): IRoom {
