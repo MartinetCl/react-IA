@@ -5,10 +5,12 @@
  - DJABI Mohammed
 
 ## Initialisation
-installation et lancement du front et back
+Installation et lancement du front et back
 ```
 ./run.sh
 ```
+Ajout de la clé d'api :
+création d'un fichier .env.local dans le back
 
 ## Découpage des rôles
  - Back
