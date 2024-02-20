@@ -82,13 +82,24 @@ export class RoomGateway implements OnGatewayConnection, OnGatewayDisconnect {
         room.password = payload.password;
     }
     this.rooms.push(room);
-    this.server.emit('room-info', room); 
+    this.server.emit('room-info', this.rooms); 
   }
 
   @SubscribeMessage('make-question')
-  async handleMakeQuestion(client: Socket, payload: any) {
+  async handleMakeQuestion(client: Socket, payload: {topic: string, difficulty: number}) {
+
+    let difficulty_field = "";
+
+    if (payload.difficulty === 1) {
+        difficulty_field = "easy";
+    } else if (payload.difficulty === 2) {
+        difficulty_field = "medium";
+    } else if (payload.difficulty === 3) {
+        difficulty_field = "hard";
+    }
+
     try {
-      let question = await this.chatGptService.askQuestion(payload.topic, payload.difficulty);
+      let question = await this.chatGptService.askQuestion(payload.topic, difficulty_field);
       this.server.emit('question', question);
     } catch (error) {
         console.error('Erreur lors de l\'appel à l\'API ChatGPT:', error);
@@ -96,7 +107,7 @@ export class RoomGateway implements OnGatewayConnection, OnGatewayDisconnect {
   }
 
   @SubscribeMessage('check-response')
-  async handleCheckResponse(client: Socket, payload: any) {
+  async handleCheckResponse(client: Socket, payload: {question: string, response: string}) {
     try {
       let result = await this.chatGptService.askResponse(payload.question, payload.response);
       this.server.emit('result', result);
@@ -107,7 +118,7 @@ export class RoomGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
   @SubscribeMessage('join-room')
   handleJoinRoom(client: Socket, payload: any) {
-    let player = this.findPlayerById(client.id);
+    let player = this.findPlayerById(payload.playerId);
     let room = this.findRoomById(payload.roomId);
     if(room) {
         if (room.password && room.password !== payload.password) {
