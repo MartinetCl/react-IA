@@ -1,6 +1,6 @@
 "use client";
 import Username from "@/components/Username";
-
+import RoomChoice from "@/components/RoomChoice";
 import { useEffect, useState } from "react";
 import { io } from "socket.io-client";
 
@@ -14,6 +14,8 @@ const Quizz = () => {
     socket.on("connect", () => {
       console.log("connected", socket.id);
     });
+
+
   }, []);
   
 
@@ -22,11 +24,8 @@ const Quizz = () => {
       {username === "" ? (
         <Username socket={socket} setUsername={setUsername} />
       ) : (
-        <div>
-          <p>test</p>
-          
+        <RoomChoice socket={socket} username={username} />
         
-        </div>
       )}
     </div>
   );
