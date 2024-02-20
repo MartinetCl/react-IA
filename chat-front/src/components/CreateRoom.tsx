@@ -1,4 +1,4 @@
-import { useState } from 'react';
+// import { useState } from 'react';
 import { useRouter } from 'next/router';
 import { Socket } from 'socket.io-client';
 import { Button } from './ui/button';
@@ -10,7 +10,7 @@ interface Props {
 }
 
 const CreateRoom = ({ socket, username }: Props) => {
-  const [privateRoomCode, setPrivateRoomCode] = useState('');
+  // const [privateRoomCode, setPrivateRoomCode] = useState('');
   const router = useRouter();
 
   const createPrivateRoom = () => {

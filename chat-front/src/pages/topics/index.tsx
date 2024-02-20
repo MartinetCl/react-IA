@@ -1,6 +1,6 @@
 
 import { useRouter } from "next/router";
-import React, { useState } from 'react';
+import React from 'react';
 
 
 export default function Component() {
@@ -65,7 +65,7 @@ export default function Component() {
   );
 }
 
-function BellIcon(props) {
+function BellIcon(props: React.SVGProps<SVGSVGElement>) {
   return (
     <svg
       {...props}
@@ -85,7 +85,7 @@ function BellIcon(props) {
   );
 }
 
-function Package2Icon(props) {
+function Package2Icon(props: React.SVGProps<SVGSVGElement>) {
   return (
     <svg
       {...props}
