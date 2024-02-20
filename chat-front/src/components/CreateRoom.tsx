@@ -9,7 +9,6 @@ interface Props {
   username: string;
 }
 
-const CreateRoom = ({ socket, username }: Props) => {
   // const [privateRoomCode, setPrivateRoomCode] = useState('');
   const router = useRouter();
 

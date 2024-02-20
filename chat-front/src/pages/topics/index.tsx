@@ -2,7 +2,6 @@
 import { useRouter } from "next/router";
 import React from 'react';
 
-
 export default function Component() {
   const router = useRouter();
   const [difficulty, setDifficulty] = React.useState('1');

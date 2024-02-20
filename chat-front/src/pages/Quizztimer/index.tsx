@@ -19,13 +19,14 @@ export default function Component() {
         return () => clearInterval(timer);
     }, []);
 
-    const formatTime = (time: number) => {
+
+        const formatTime = (time: number) => {
         const minutes = Math.floor(time / 60);
         const seconds = time % 60;
         return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
     };
 
-    const handleSubmit = (event : React.FormEvent<HTMLFormElement>) => {
+        const handleSubmit = (event : React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         console.log("User's answer:", userAnswer);
     };
@@ -33,7 +34,6 @@ export default function Component() {
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setUserAnswer(event.target.value);
     };
-    
     return (
         <div className="flex h-screen bg-gray-100 dark:bg-gray-900">
             <div className="flex flex-col w-3/4">
