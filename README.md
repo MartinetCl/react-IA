@@ -15,5 +15,5 @@ installation et lancement du front et back
    - Alex : Sockets
    - Clément : Service ChatGPT
  - Front
-    - Robin : Socket & logic
+    - Robin : Socket, logic & integration
     - Mohammed : Design
