@@ -1,12 +1,13 @@
 
-import { useRouter } from "next/router"; // Importez useRouter de Next.js
+import { useRouter } from "next/router";
+import React, { useState } from 'react';
+
 
 export default function Component() {
   const router = useRouter();
-
-  // Fonction pour gérer la redirection
+  const [difficulty, setDifficulty] = React.useState('1');
   const handleStartQuiz = () => {
-    router.push('/Quizztimer');
+    router.push(`/Quizztimer?difficulty=${difficulty}`);
   };
 
   return (
@@ -24,6 +25,22 @@ export default function Component() {
       <main className="flex flex-1 flex-col gap-4 p-4 md:gap-8 md:p-6">
         <div className="flex items-center">
           <h1 className="font-semibold text-lg md:text-2xl">Choisissez un sujet de quiz</h1>
+        </div>
+        <div className="flex items-center justify-between">
+          <h1 className="font-semibold text-lg md:text-2xl">Choisissez un sujet de quiz</h1>
+          <div>
+            <label htmlFor="difficulty-select" className="mr-2">Difficulté :</label>
+            <select
+              id="difficulty-select"
+              value={difficulty}
+              onChange={(e) => setDifficulty(e.target.value)}
+              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500"
+            >
+              <option value="1">Niveau 1</option>
+              <option value="2">Niveau 2</option>
+              <option value="3">Niveau 3</option>
+            </select>
+          </div>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {[
