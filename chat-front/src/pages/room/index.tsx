@@ -1,58 +1,53 @@
-
-import Link from "next/link"
-import { Button } from "@/components/ui/button"
-
+import Link from "next/link";
+import { useRouter } from "next/router"; // Importez useRouter de Next.js
 
 export default function Component() {
+    const router = useRouter(); // Utilisez le hook useRouter
+
+    // Fonction pour gérer la redirection
+    const handleStartQuiz = () => {
+        router.push('/Quizztimer'); // Redirigez vers la page /Quizztimer
+    };
+
     return (
         <div className="flex flex-col h-screen">
             <header className="flex h-[60px] items-center gap-4 border-b bg-gray-100/40 px-6 dark:bg-gray-800/40">
-                <Link className="flex items-center gap-2 font-semibold" href="#">
-                    <Package2Icon className="h-6 w-6" />
-                    <span className="">Quizz</span>
+                <Link href="#">
+                    <a className="flex items-center gap-2 font-semibold">
+                        <Package2Icon className="h-6 w-6" />
+                        <span>Acme Inc</span>
+                    </a>
                 </Link>
-                <Button className="ml-auto h-8 w-8" size="icon" variant="outline">
+                <button className="ml-auto h-8 w-8 bg-black text-white" onClick={handleStartQuiz}>
                     <BellIcon className="h-4 w-4" />
-                    <span className="sr-only">Toggle notifications</span>
-                </Button>
+                    <span className="sr-only">Notifications</span>
+                </button>
             </header>
             <main className="flex flex-1 flex-col gap-4 p-4 md:gap-8 md:p-6">
                 <div className="flex items-center">
-                    <h1 className="font-semibold text-lg md:text-2xl">Choissisez votre Room</h1>
+                    <h1 className="font-semibold text-lg md:text-2xl">Choisissez un sujet de quiz</h1>
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                    <div className="border shadow-sm rounded-lg">
-                        <div className="p-4">
-                            <h2 className="text-xl font-semibold">Room privé</h2>
-                            <p className="mt-2 text-gray-500 dark:text-gray-400">Cette room est déstinez à des parties privées.</p>
-                            <br />
-                            <div>
-                                <label htmlFor="username" className="sr-only">Code </label>
-                                <input
-                                    id="username"
-                                    name="username"
-                                    type="text"
-                                    autoComplete="username"
-                                    required
-                                    className="appearance-none rounded-none relative block px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                                    placeholder="Entrez votre code d'accés"
-                                />
-                                <Button className="mt-4">Accedez</Button>
+                    {[
+                        { title: "Quiz de Géographie", description: "Ce quiz testera vos connaissances en géographie." },
+                        { title: "Quiz d'Histoire", description: "Ce quiz testera vos connaissances en histoire." },
+                        { title: "Quiz de Sciences", description: "Ce quiz testera vos connaissances en sciences." },
+                        { title: "Quiz de Mathématiques", description: "Ce quiz testera vos connaissances en mathématiques." },
+                        { title: "Quiz de Littérature", description: "Ce quiz testera vos connaissances en littérature." },
+                        { title: "Quiz d'Art", description: "Ce quiz testera vos connaissances en art." }
+                    ].map((quiz, index) => (
+                        <div key={index} className="border border-solid shadow-sm rounded-lg border-gray-300 dark:border-gray-700 rounded-2xl">
+                            <div className="p-4">
+                                <h2 className="text-xl font-semibold">{quiz.title}</h2>
+                                <p className="mt-2 text-gray-500 dark:text-gray-400">{quiz.description}</p>
+                                <button className="mt-4 bg-black text-white py-2 px-4 rounded-lg" onClick={handleStartQuiz}>Commencer le Quiz</button>
                             </div>
                         </div>
-                    </div>
-                    <div className="border shadow-sm rounded-lg">
-                        <div className="p-4">
-                            <h2 className="text-xl font-semibold">Room publique (Aléatoire)</h2>
-                            <p className="mt-2 text-gray-500 dark:text-gray-400"> Cette room est déstinez à des parties publique et aléatoire.</p>
-                            <Button className="mt-4">Accedez</Button>
-                        </div>
-                    </div>
-
+                    ))}
                 </div>
             </main>
         </div>
-    )
+    );
 }
 
 function BellIcon(props: React.SVGProps<SVGSVGElement>) {
