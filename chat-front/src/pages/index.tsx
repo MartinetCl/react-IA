@@ -1,6 +1,6 @@
 import Image from 'next/image';
 
-import { Sponsors } from '@/components/Sponsors';
+
 import { Meta } from '@/layouts/Meta';
 import { Main } from '@/templates/Main';
 
@@ -22,7 +22,7 @@ const Index = () => (
       />
     </a>
     <h2 className="mt-5 text-2xl font-bold">Sponsors</h2>
-    <Sponsors />
+
     <h2 className="mt-5 text-2xl font-bold">
       Boilerplate code for your Nextjs project with Tailwind CSS
     </h2>
@@ -35,7 +35,7 @@ const Index = () => (
       <span role="img" aria-label="zap">
         ⚡️
       </span>{' '}
-      Made with Next.js, TypeScript, ESLint, Prettier, Husky, Lint-Staged,
+      Made with Next.js, TypeScript, ESLint, Prettier, Lint-Staged,
       VSCode, Netlify, PostCSS, Tailwind CSS, Authentication with Clerk,
       Database with DrizzleORM (SQLite, PostgreSQL, and MySQL) and Turso.
     </p>
@@ -89,12 +89,6 @@ const Index = () => (
         <a href="https://prettier.io" rel="nofollow">
           Prettier
         </a>
-      </li>
-      <li>
-        <span role="img" aria-label="fox_face">
-          🦊
-        </span>{' '}
-        Husky for Git Hooks
       </li>
       <li>
         <span role="img" aria-label="no_entry_sign">
