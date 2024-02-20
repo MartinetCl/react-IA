@@ -15,7 +15,7 @@ export default function Component() {
       <header className="flex h-[60px] items-center gap-4 border-b bg-gray-100/40 px-6 dark:bg-gray-800/40">
         <a className="flex items-center gap-2 font-semibold cursor-pointer" onClick={() => router.push('/')}>
           <Package2Icon className="h-6 w-6" />
-          <span>Acme Inc</span>
+          <span>Quizz app </span>
         </a>
         <button className="ml-auto h-8 w-8 bg-black text-white flex justify-center items-center" onClick={handleStartQuiz}>
           <BellIcon className="h-4 w-4" />
@@ -27,7 +27,7 @@ export default function Component() {
           <h1 className="font-semibold text-lg md:text-2xl">Choisissez un sujet de quiz</h1>
         </div>
         <div className="flex items-center justify-between">
-          <h1 className="font-semibold text-lg md:text-2xl">Choisissez un sujet de quiz</h1>
+
           <div>
             <label htmlFor="difficulty-select" className="mr-2">Difficulté :</label>
             <select
