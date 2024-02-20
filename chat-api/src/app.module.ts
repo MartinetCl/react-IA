@@ -7,6 +7,7 @@ import ChatGptService from './services/chatGptService';
 @Module({
   imports: [RoomModule, ConfigModule.forRoot({
     isGlobal: true,
+    envFilePath: '.env.local'
   })],
   controllers: [],
   providers: [ChatGptService],

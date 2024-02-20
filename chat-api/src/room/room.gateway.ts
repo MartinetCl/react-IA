@@ -38,6 +38,10 @@ export class RoomGateway implements OnGatewayConnection, OnGatewayDisconnect {
   responses: IResponse[] = [];
   rooms: IRoom[] = [];
 
+  public constructor(chatGptService: ChatGptService) { 
+    this.chatGptService = chatGptService;
+  }
+
   @SubscribeMessage('message')
   handleMessage(client: any, payload: any): string {
     return 'Hello world!';
