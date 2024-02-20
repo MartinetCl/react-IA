@@ -84,8 +84,8 @@ export class RoomGateway implements OnGatewayConnection, OnGatewayDisconnect {
   @SubscribeMessage('make-question')
   async handleMakeQuestion(client: Socket, payload: any) {
     try {
-      // let question = await this.chatGptService.askQuestion(payload.question, payload.topic, payload.difficulty);
-      // this.server.emit('question', question);
+      let question = await this.chatGptService.askQuestion(payload.topic, payload.difficulty);
+      this.server.emit('question', question);
     } catch (error) {
         console.error('Erreur lors de l\'appel à l\'API ChatGPT:', error);
     }
