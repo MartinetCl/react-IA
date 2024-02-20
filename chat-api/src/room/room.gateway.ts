@@ -64,6 +64,7 @@ export class RoomGateway implements OnGatewayConnection, OnGatewayDisconnect {
     if (payload.username && player) {
       player.username = payload.username;
       this.server.emit('player-info', player);
+      this.server.emit('room-info', this.rooms);
     }
   }
 
