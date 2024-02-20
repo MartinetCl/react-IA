@@ -25,12 +25,15 @@ class ChatGptService {
     }
   }
 
-  async askQuestion(question: string, context: string, difficulty: string): Promise<string> {
-    return this.sendMessage(question, 'Give me a question related to ' + context + ' with a level of difficulty ' + difficulty);
+  async askQuestion(context: string, difficulty: string): Promise<string> {
+    return this.sendMessage('Give me just the question related to ' + context + ' with a level of difficulty ' + difficulty, 'You will give questions following caracteristics listed in the following text');
   }
 
-  async askResponse(question: string): Promise<string> {
-    return this.sendMessage(question, 'Give me the response to the following question.');
+  async askResponse(question: string, response: string): Promise<string> {
+    return this.sendMessage('Evaluate how well the response aligns with the context:\n\n' + 
+    'Question: ' + question + '\n' + 
+    'Expected Response: ' + response,
+    'Provide a score between 0 and 100 and only give that score. The score should reflect the contextual accuracy of the response to the given question. For example, if the question is about Cinderella and the expected response is "Cinderella," a score of 100 is perfect. A lower score should be given if the response deviates from the expected context.');
   }
 
   async askIntel(question: string): Promise<string> {
