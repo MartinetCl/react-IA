@@ -91,10 +91,11 @@ export class RoomGateway implements OnGatewayConnection, OnGatewayDisconnect {
     }
   }
 
-  @SubscribeMessage('get-response')
-  handleGetResponse(client: Socket, payload: any) {
+  @SubscribeMessage('check-response')
+  async handleCheckResponse(client: Socket, payload: any) {
     try {
-      // response ........ 
+      let result = await this.chatGptService.askResponse(payload.question, payload.response);
+      this.server.emit('result', result);
     } catch (error) {
         console.error('Erreur lors de l\'appel à l\'API ChatGPT:', error);
     }

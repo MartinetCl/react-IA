@@ -29,8 +29,8 @@ class ChatGptService {
     return this.sendMessage('Give me a question related to ' + context + ' with a level of difficulty ' + difficulty, 'You will give questions following caracteristics listed in the following text');
   }
 
-  async askResponse(question: string): Promise<string> {
-    return this.sendMessage(question, 'Give me the response to the following question.');
+  async askResponse(question: string, response: string): Promise<string> {
+    return this.sendMessage('The question is : ' + question + ' and the response is : ' + response, 'You will give a number between 0 and 100, 100 is the best, based on the accuracy of the response for the question I will give you');
   }
 
   async askIntel(question: string): Promise<string> {
